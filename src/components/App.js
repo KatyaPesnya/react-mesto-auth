@@ -9,14 +9,23 @@ import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from "./AddPlacePopup";
 import api from "../utils/api";
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import { Route, Switch, useHistory } from 'react-router-dom';
+import ProtectedRoute from './ProtectedRoute';
+import Login from './Login';
+import Register from './Register';
+import InfoToolTip from './InfoTooltip';
+
 
 function App() {
-  const [cards, setCards] = useState([])
+  const [cards, setCards] = useState([]);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
-  const [selectedCard, setSelectedCard] = useState(null)
-  const [currentUser, setCurrentUser] = useState({})
+  const [isInfoToolTipOpen, setIsInfoToolTipOpen] = useState(false);
+  const [selectedCard, setSelectedCard] = useState(null);
+  const [currentUser, setCurrentUser] = useState({});
+  const history = useHistory();
+  const [loggedIn, setLoggedIn] = useState(false);
 
   function handleCardLike(card) {
     // Снова проверяем, есть ли уже лайк на этой карточке
@@ -85,11 +94,17 @@ function App() {
     setSelectedCard(card);
   }
 
+  function handleInfoToolTipOpen() {
+    setIsInfoToolTipOpen(!isInfoToolTipOpen)
+  }
+
   function closeAllPopups() {
     setIsEditProfilePopupOpen(false)
     setIsAddPlacePopupOpen(false)
     setIsEditAvatarPopupOpen(false)
+    setIsInfoToolTipOpen(false)
     setSelectedCard(null)
+
   }
   function handleUpdateUser(data){
     api.setUserInfo(data)
@@ -119,7 +134,20 @@ function App() {
         <div className="root">
           <div className="page">
             <Header/>
-            <Main
+            <Switch>
+              <Route path="/sign-up">
+                <Register/>
+                </Route>
+                <Route path="/sign-in">
+                   <Login/> 
+                </Route>
+             
+                <ProtectedRoute
+                  path="/"
+                  // title="ВЫ уверены?"
+                  // ButtonText="Да"
+                  component={Main}
+                  loggedIn={loggedIn}
                 cards={cards}
                 onCardLike={handleCardLike}
                 onCardDelete={handleCardDelete}
@@ -127,8 +155,8 @@ function App() {
                 onAddPlace={handleAddPlaceClick}
                 onEditAvatar={handleEditAvatarClick}
                 onCardClick={handleCardClick}
-
-            />
+                  />
+               </Switch>
             <Footer/>
           </div>
           <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser}/>
@@ -138,6 +166,7 @@ function App() {
           <ImagePopup card={selectedCard} onClose={closeAllPopups}/>
         </div>
       </div>
+      <InfoToolTip isOpen={isInfoToolTipOpen} onClose={closeAllPopups} isSuccess ={true} />
 </CurrentUserContext.Provider>
   );
 }
