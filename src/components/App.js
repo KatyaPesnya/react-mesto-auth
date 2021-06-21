@@ -9,11 +9,12 @@ import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from "./AddPlacePopup";
 import api from "../utils/api";
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
-import { Route, Switch, useHistory } from 'react-router-dom';
+import { Route, Switch, useHistory, Redirect } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute';
 import Login from './Login';
 import Register from './Register';
 import InfoToolTip from './InfoTooltip';
+import * as auth from './auth'
 
 
 function App() {
@@ -24,8 +25,12 @@ function App() {
   const [isInfoToolTipOpen, setIsInfoToolTipOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
   const [currentUser, setCurrentUser] = useState({});
-  const history = useHistory();
+
+  const [authorizationEmail,setAuthorizationEmail]= useState(null)
   const [loggedIn, setLoggedIn] = useState(false);
+ const [isSuccess, setIsSuccess] = useState(false);
+ const history = useHistory();
+
 
   function handleCardLike(card) {
     // Снова проверяем, есть ли уже лайк на этой карточке
@@ -38,6 +43,11 @@ function App() {
           console.log(err);
         })
   }
+ function handleSingOut(){
+   setLoggedIn(false)
+   localStorage.removeItem('jwt')
+   history.push('/sing-in')
+ }
 
   function handleCardDelete(card) {
     api.deleteCard(card._id)
@@ -128,18 +138,83 @@ function App() {
         })
 
   }
+  function handleInfoToolTipOpen() {
+    setIsInfoToolTipOpen(!isInfoToolTipOpen)
+  }
+
+  function register(data){
+    auth
+    .register(data)
+    .then((data)=>{
+      setIsSuccess(true);
+      handleInfoToolTipOpen();
+      history.push('/sing-in')
+    },
+    (err) => {
+      console.log(err)
+      setIsSuccess(false)
+      handleInfoToolTipOpen()
+    })
+  }
+
+  function login(data){
+     auth
+    .autorize(data)
+    .then((data)=> {
+      setLoggedIn(true);
+      localStorage.setItem('jwt' , data.jwt);
+      history.push('/')
+      checkToken()
+    },
+    (err) => {
+      console.log(err)
+    }
+    )
+  }
+  const checkToken = React.useCallback(
+    () => {
+
+      const jwt = localStorage.getItem('jwt');
+
+      auth
+        .checkToken(jwt)
+        .then((data) => {
+          setLoggedIn(true)
+          setAuthorizationEmail(data.data.email)
+          history.push('/')
+        },
+          (err) => {
+            console.log(err)
+          })
+    },
+    [history],
+  )
+  React.useEffect(()=>{
+    const jwt =localStorage.getItem('jwt')
+    if(jwt){
+      checkToken()
+    }
+  },[checkToken])
+
   return (
       <CurrentUserContext.Provider value={currentUser}>
       <div className="App">
         <div className="root">
           <div className="page">
-            <Header/>
+            <Header
+            loggedIn={loggedIn}
+            handleSingOut={handleSingOut}
+            onSingOut={handleSingOut}
+            authorizationEmail={authorizationEmail}
+            />
             <Switch>
               <Route path="/sign-up">
-                <Register/>
+                <Register onRegister={register}/>
                 </Route>
                 <Route path="/sign-in">
-                   <Login/> 
+                   <Login 
+                   onLogin={login}
+                   onCheckToken={checkToken}/> 
                 </Route>
              
                 <ProtectedRoute
@@ -156,6 +231,9 @@ function App() {
                 onEditAvatar={handleEditAvatarClick}
                 onCardClick={handleCardClick}
                   />
+                  <Route>
+                    {loggedIn ? <Redirect to='/sing-in'/>: <Redirect to='/'/> }
+                  </Route>
                </Switch>
             <Footer/>
           </div>
@@ -166,7 +244,7 @@ function App() {
           <ImagePopup card={selectedCard} onClose={closeAllPopups}/>
         </div>
       </div>
-      <InfoToolTip isOpen={isInfoToolTipOpen} onClose={closeAllPopups} isSuccess ={true} />
+      <InfoToolTip isOpen={isInfoToolTipOpen} onClose={closeAllPopups} isSuccess ={isSuccess} />
 </CurrentUserContext.Provider>
   );
 }
