@@ -19,7 +19,6 @@ function Header({loggedIn, onSingOut, authorizationEmail}) {
   return (
 
       <header className={loggedIn ? 'header header_row-reverse page__content': 'header page__content'}>
-            {/* <img src={logo} alt="логотип Mesto Russia" className="header__logo"/> */}
         {loggedIn &&
         (
           <div className={menuIsOpen ? 'header__container header__container_opened': 'header__container'} >

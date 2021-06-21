@@ -30,7 +30,7 @@ export const autorize = (data) => {
         
 }
 
-export const checkToken=(token)=>{
+export const checkToken = (token) => {
     return fetch(`${BASE_URL}/users/me`, 
     {
         method: 'GET',

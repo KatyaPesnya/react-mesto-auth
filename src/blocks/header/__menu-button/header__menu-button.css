@@ -8,6 +8,7 @@
     padding: 0;
     border: unset;
     transition: opacity .3s ease;
+    margin-right: 44px;
 }
 
 .header__menu-button:hover{
