@@ -14,7 +14,7 @@ import ProtectedRoute from './ProtectedRoute';
 import Login from './Login';
 import Register from './Register';
 import InfoToolTip from './InfoTooltip';
-import * as auth from './auth'
+import * as auth from './auth';
 
 
 function App() {
@@ -43,11 +43,6 @@ function App() {
           console.log(err);
         })
   }
- function handleSingOut(){
-   setLoggedIn(false)
-   localStorage.removeItem('jwt')
-   history.push('/sing-in')
- }
 
   function handleCardDelete(card) {
     api.deleteCard(card._id)
@@ -108,6 +103,10 @@ function App() {
     setIsInfoToolTipOpen(!isInfoToolTipOpen)
   }
 
+  function handleInfoToolTipOpen() {
+    setIsInfoToolTipOpen(!isInfoToolTipOpen)
+  }
+
   function closeAllPopups() {
     setIsEditProfilePopupOpen(false)
     setIsAddPlacePopupOpen(false)
@@ -138,9 +137,7 @@ function App() {
         })
 
   }
-  function handleInfoToolTipOpen() {
-    setIsInfoToolTipOpen(!isInfoToolTipOpen)
-  }
+
 
   function register(data){
     auth
@@ -148,7 +145,7 @@ function App() {
     .then((data)=>{
       setIsSuccess(true);
       handleInfoToolTipOpen();
-      history.push('/sing-in')
+      history.push('/sign-in')
     },
     (err) => {
       console.log(err)
@@ -164,13 +161,19 @@ function App() {
       setLoggedIn(true);
       localStorage.setItem('jwt' , data.jwt);
       history.push('/')
-      checkToken()
+     
     },
     (err) => {
       console.log(err)
     }
     )
   }
+  function handleSingOut(){
+    setLoggedIn(false)
+    localStorage.removeItem('jwt')
+    history.push('/sign-in')
+  } 
+
   const checkToken = React.useCallback(
     () => {
 
@@ -203,7 +206,6 @@ function App() {
           <div className="page">
             <Header
             loggedIn={loggedIn}
-            handleSingOut={handleSingOut}
             onSingOut={handleSingOut}
             authorizationEmail={authorizationEmail}
             />
@@ -219,8 +221,6 @@ function App() {
              
                 <ProtectedRoute
                   path="/"
-                  // title="ВЫ уверены?"
-                  // ButtonText="Да"
                   component={Main}
                   loggedIn={loggedIn}
                 cards={cards}
@@ -232,7 +232,7 @@ function App() {
                 onCardClick={handleCardClick}
                   />
                   <Route>
-                    {loggedIn ? <Redirect to='/sing-in'/>: <Redirect to='/'/> }
+                    {loggedIn ? <Redirect to='/sign-in'/> : <Redirect to='/'/> }
                   </Route>
                </Switch>
             <Footer/>

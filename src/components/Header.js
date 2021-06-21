@@ -14,7 +14,6 @@ function Header({loggedIn, onSingOut, authorizationEmail}) {
 
   function handleSingOut(){
     setMenuIsOpen(false)
-    handleSingOut()
     onSingOut()
   }
   return (
@@ -36,8 +35,8 @@ function Header({loggedIn, onSingOut, authorizationEmail}) {
 }
 {!loggedIn &&
 (<nav>
-{location.pathname === '/sing-in' &&(<NavLink className="header__navlink" to="/sing-up"> Регистрация </NavLink>)}
-{location.pathname === '/sing-up' &&(<NavLink className="header__navlink" to="sing-in"> Войти </NavLink>)}
+{location.pathname === '/sign-in' &&(<NavLink className="header__navlink" to="/sign-up"> Регистрация </NavLink>)}
+{location.pathname === '/sign-up' &&(<NavLink className="header__navlink" to="sign-in"> Войти </NavLink>)}
 </nav>)
 }
 </div>

@@ -7,6 +7,8 @@ line-height: 17px;
 color: #fff;
 text-decoration: unset;
 transition: opacity .3s ease;
+text-align: right;
+
 
 }
 
@@ -17,6 +19,8 @@ transition: opacity .3s ease;
 
 @media screen and (min-width: 768px) {
     .header__navlink{
-        font-size: 18px;
+font-size: 18px;
+line-height: 22px;
+
     }
 }
