@@ -159,7 +159,7 @@ function App() {
     .autorize(data)
     .then((data)=> {
       setLoggedIn(true);
-      localStorage.setItem('jwt' , data.jwt);
+      localStorage.setItem('jwt' , data.token);
       history.push('/')
      
     },
@@ -177,10 +177,10 @@ function App() {
   const checkToken = React.useCallback(
     () => {
 
-      const jwt = localStorage.getItem('jwt');
+      const token = localStorage.getItem('jwt');
 
       auth
-        .checkToken(jwt)
+        .checkToken(token)
         .then((data) => {
           setLoggedIn(true)
           setAuthorizationEmail(data.data.email)
@@ -193,8 +193,8 @@ function App() {
     [history],
   )
   React.useEffect(()=>{
-    const jwt =localStorage.getItem('jwt')
-    if(jwt){
+    const token =localStorage.getItem('jwt')
+    if(token){
       checkToken()
     }
   },[checkToken])

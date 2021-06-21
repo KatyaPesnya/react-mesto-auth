@@ -5,7 +5,7 @@ return response.ok ? response.json() : Promise.reject( new Error(`Ошибка $
 }
 
 export const register = (data) => {
-    return fetch(`${BASE_URL}/auth/local/signup` , {
+    return fetch(`${BASE_URL}/signup` , {
      method: 'POST'  ,
      headers: {
          'Accept': 'application/json',
@@ -18,7 +18,7 @@ export const register = (data) => {
 }
 
 export const autorize = (data) => {
-    return fetch(`${BASE_URL}/auth/local/signin` , {
+    return fetch(`${BASE_URL}/signin` , {
      method: 'POST'  ,
      headers: {
          'Accept': 'application/json',
@@ -30,14 +30,14 @@ export const autorize = (data) => {
         
 }
 
-export const checkToken=(jwt)=>{
-    return fetch(`${BASE_URL}/auth/local/users/me`, 
+export const checkToken=(token)=>{
+    return fetch(`${BASE_URL}/users/me`, 
     {
         method: 'GET',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${jwt}`,
+            'Authorization': `Bearer ${token}`,
         },
      } )
        .then(response => checkResponse(response))
