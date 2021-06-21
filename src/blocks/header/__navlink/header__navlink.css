@@ -8,6 +8,7 @@ color: #fff;
 text-decoration: unset;
 transition: opacity .3s ease;
 text-align: right;
+padding-right: 30px;
 
 
 }
@@ -21,6 +22,7 @@ text-align: right;
     .header__navlink{
 font-size: 18px;
 line-height: 22px;
+
 
     }
 }
