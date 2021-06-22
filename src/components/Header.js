@@ -15,14 +15,16 @@ function Header({ loggedIn, onSignOut, authorizationEmail }) {
     setMenuIsOpen(false);
     onSignOut();
   }
+
   return (
-    <header
-      className={
-        loggedIn
-          ? "header header_row-reverse page__content"
-          : "header page__content"
-      }
-    >
+    // <header
+    //   className={
+    //     loggedIn
+    //       ? "header header_row-reverse page__content"
+    //       : "header page__content"
+    //   }
+    // >
+       <header className= "header  page__content" > 
       {loggedIn && (
         <div
           className={
@@ -60,14 +62,12 @@ function Header({ loggedIn, onSignOut, authorizationEmail }) {
           <nav>
             {location.pathname === "/sign-in" && (
               <NavLink className="header__navlink" to="/sign-up">
-                {" "}
-                Регистрация{" "}
+                Регистрация
               </NavLink>
             )}
             {location.pathname === "/sign-up" && (
               <NavLink className="header__navlink" to="sign-in">
-                {" "}
-                Войти{" "}
+                Войти
               </NavLink>
             )}
           </nav>

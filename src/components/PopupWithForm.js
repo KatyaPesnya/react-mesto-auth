@@ -5,7 +5,6 @@ function PopupWithForm(props) {
     <section className={`overlay ${props.isOpen && "overlay_opened"}`}>
       <div className={`popup popup_type_${props.name}`}>
         <form
-          noValidate
           className="popup__container"
           name={props.name}
           onSubmit={props.onSubmit}

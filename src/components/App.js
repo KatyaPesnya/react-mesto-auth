@@ -14,7 +14,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import Login from "./Login";
 import Register from "./Register";
 import InfoToolTip from "./InfoTooltip";
-import * as auth from "./auth";
+import * as auth from "../utils/auth";
 
 function App() {
   const [cards, setCards] = useState([]);
@@ -150,13 +150,12 @@ function App() {
         setIsSuccess(true);
         handleInfoToolTipOpen();
         history.push("/sign-in");
-      },
-      (err) => {
+      })
+      .catch((err) => {
         console.log(err);
         setIsSuccess(false);
         handleInfoToolTipOpen();
-      }
-    );
+        })
   }
 
   function login(data) {
@@ -165,12 +164,12 @@ function App() {
         setLoggedIn(true);
         localStorage.setItem("jwt", data.token);
         history.push("/");
-      },
-      (err) => {
+      })
+      .catch((err) => {
         console.log(err);
-      }
-    );
+      })
   }
+
   function handleSignOut() {
     setLoggedIn(false);
     localStorage.removeItem("jwt");
@@ -178,6 +177,7 @@ function App() {
   }
 
   const checkToken = React.useCallback(() => {
+    
     const token = localStorage.getItem("jwt");
 
     auth.checkToken(token).then(
@@ -185,12 +185,13 @@ function App() {
         setLoggedIn(true);
         setAuthorizationEmail(data.data.email);
         history.push("/");
-      },
-      (err) => {
+      })
+      .catch((err) => {
         console.log(err);
       }
     );
   }, [history]);
+
   React.useEffect(() => {
     const token = localStorage.getItem("jwt");
     if (token) {
@@ -218,7 +219,7 @@ function App() {
               </Route>
 
               <ProtectedRoute
-                path="/"
+                path exact="/"
                 component={Main}
                 loggedIn={loggedIn}
                 cards={cards}

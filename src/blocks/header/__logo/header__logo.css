@@ -7,7 +7,11 @@
 .header__logo:hover {
    cursor: pointer;
   }
-  
+    
+@media (min-width: 768px) {
+  .header__logo {
+    padding: 45px 0 41px 0; 
+  }}
 @media (min-width: 1280px) {
   .header__logo {
     max-width: 142px;

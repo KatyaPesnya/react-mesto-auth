@@ -19,8 +19,11 @@ function AddPlacePopup(props) {
     props.onAddPlace({
       name: name,
       link: link,
-    });
+     
+    })
   }
+
+  
   return (
     <PopupWithForm
       name="add"
