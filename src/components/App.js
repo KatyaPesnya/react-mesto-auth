@@ -170,7 +170,7 @@ function App() {
       }
     );
   }
-  function handleSingOut() {
+  function handleSignOut() {
     setLoggedIn(false);
     localStorage.removeItem("jwt");
     history.push("/sign-in");
@@ -204,7 +204,7 @@ function App() {
           <div className="page">
             <Header
               loggedIn={loggedIn}
-              onSingOut={handleSingOut}
+              onSignOut={handleSignOut}
               authorizationEmail={authorizationEmail}
             />
             <Switch>
@@ -212,7 +212,7 @@ function App() {
                 <Register onRegister={register} />
               </Route>
               <Route path="/sign-in">
-                <Login onLogin={login} onCheckToken={checkToken} />
+                <Login onLogin={login} />
               </Route>
 
               <ProtectedRoute

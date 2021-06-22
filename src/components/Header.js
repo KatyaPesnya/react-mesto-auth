@@ -2,7 +2,7 @@ import React from "react";
 import logo from "../images/header-logo.svg";
 import { NavLink, useLocation } from "react-router-dom";
 
-function Header({ loggedIn, onSingOut, authorizationEmail }) {
+function Header({ loggedIn, onSignOut, authorizationEmail }) {
   const location = useLocation();
 
   const [menuIsOpen, setMenuIsOpen] = React.useState(false);
@@ -11,9 +11,9 @@ function Header({ loggedIn, onSingOut, authorizationEmail }) {
     setMenuIsOpen(!menuIsOpen);
   }
 
-  function handleSingOut() {
+  function handleSignOut() {
     setMenuIsOpen(false);
-    onSingOut();
+    onSignOut();
   }
   return (
     <header
@@ -37,7 +37,7 @@ function Header({ loggedIn, onSingOut, authorizationEmail }) {
           <button
             className="header__button"
             type="button"
-            onClick={handleSingOut}
+            onClick={handleSignOut}
           >
             Выйти
           </button>
