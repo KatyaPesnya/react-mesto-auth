@@ -5,3 +5,8 @@
     padding: 27px 0;
     
 }
+@media screen and (min-width: 768px){
+    .header__container-main{
+        padding: 0;
+    }
+}
