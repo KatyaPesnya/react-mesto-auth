@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function Login({ onLogin }) {
+function Login({ onLogin, onCheckToken}) {
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
@@ -11,10 +11,6 @@ function Login({ onLogin }) {
   }
   function handleSubmit(e) {
     e.preventDefault();
-    if (!loginData.email || !loginData.password) {
-      return;
-    }
-
     onLogin(loginData);
   }
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import Main from "./Main";
@@ -29,6 +29,7 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const history = useHistory();
+
 
   function handleCardLike(card) {
     // Снова проверяем, есть ли уже лайк на этой карточке
@@ -197,6 +198,7 @@ function App() {
     }
   }, [checkToken]);
 
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="App">
@@ -212,7 +214,7 @@ function App() {
                 <Register onRegister={register} />
               </Route>
               <Route path="/sign-in">
-                <Login onLogin={login} />
+                <Login onLogin={login} onCheckToken={checkToken} />
               </Route>
 
               <ProtectedRoute
