@@ -17,14 +17,14 @@ function Header({ loggedIn, onSignOut, authorizationEmail }) {
   }
 
   return (
-    // <header
-    //   className={
-    //     loggedIn
-    //       ? "header header_row-reverse page__content"
-    //       : "header page__content"
-    //   }
-    // >
-       <header className= "header  page__content" > 
+    <header
+      className={
+        loggedIn
+          ? "header header_row-reverse page__content"
+          : "header page__content"
+      }
+    >
+     
       {loggedIn && (
         <div
           className={
@@ -46,7 +46,7 @@ function Header({ loggedIn, onSignOut, authorizationEmail }) {
         </div>
       )}
       <div className="header__container-main">
-        <img src={logo} alt="логотип Mesto Russia" className="header__logo" />
+      <img src={logo} alt="логотип Mesto Russia" className="header__logo" />
         {loggedIn && (
           <button
             className={
