@@ -15,14 +15,16 @@ function AddPlacePopup(props) {
 
   function handleSubmit(e) {
     e.preventDefault();
-
     props.onAddPlace({
       name: name,
       link: link,
-     
     })
   }
-
+  
+  React.useEffect(() => {
+    setName('');
+    setLink('')
+  }, [props.isOpen]) 
   
   return (
     <PopupWithForm

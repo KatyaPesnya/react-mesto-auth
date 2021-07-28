@@ -2,19 +2,23 @@ import React, { useEffect, useState } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import Main from "./Main";
-import PopupWithForm from "./PopupWithForm";
+import ConfirmPopup from "./ConfirmPopup";
 import ImagePopup from "./ImagePopup";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
-import api from "../utils/api";
-import { CurrentUserContext } from "../contexts/CurrentUserContext";
-import { Route, Switch, useHistory, Redirect } from "react-router-dom";
-import ProtectedRoute from "./ProtectedRoute";
-import Login from "./Login";
-import Register from "./Register";
 import InfoToolTip from "./InfoTooltip";
+
+import api from "../utils/api";
 import * as auth from "../utils/auth";
+
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
+
+import { Route, Switch, useHistory, Redirect } from "react-router-dom";
+import Register from "./Register";
+import Login from "./Login";
+
+import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
   const [cards, setCards] = useState([]);
@@ -22,6 +26,7 @@ function App() {
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isInfoToolTipOpen, setIsInfoToolTipOpen] = useState(false);
+  const [isConfirmPopupOpen, setIsConfirmPopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
   const [currentUser, setCurrentUser] = useState({});
 
@@ -29,7 +34,6 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const history = useHistory();
-
 
   function handleCardLike(card) {
     // Снова проверяем, есть ли уже лайк на этой карточке
@@ -68,7 +72,8 @@ function App() {
         console.log(err);
       });
   }
-  React.useEffect(() => {
+
+    useEffect(() => {
     api
       .getCards()
       .then((data) => {
@@ -79,7 +84,7 @@ function App() {
       });
   }, []);
 
-  React.useEffect(() => {
+    useEffect(() => {
     api
       .getUserInfo()
       .then((data) => {
@@ -110,15 +115,12 @@ function App() {
     setIsInfoToolTipOpen(!isInfoToolTipOpen);
   }
 
-  function handleInfoToolTipOpen() {
-    setIsInfoToolTipOpen(!isInfoToolTipOpen);
-  }
-
   function closeAllPopups() {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
     setIsInfoToolTipOpen(false);
+    setIsConfirmPopupOpen(false);
     setSelectedCard(null);
   }
   function handleUpdateUser(data) {
@@ -192,7 +194,7 @@ function App() {
     );
   }, [history]);
 
-  React.useEffect(() => {
+    useEffect(() => {
     const token = localStorage.getItem("jwt");
     if (token) {
       checkToken();
@@ -246,11 +248,13 @@ function App() {
             onClose={closeAllPopups}
             onAddPlace={handleAddPlaceSubmit}
           />
-          <PopupWithForm
-            name="delete-card"
-            title="Вы уверены?"
-            submitText="Да"
-          />
+              <ConfirmPopup
+        isOpen={isConfirmPopupOpen}
+        onClose={closeAllPopups}
+        onSubmit={handleCardDelete}
+        title="Вы уверены?"
+        submitText="Да"
+      />
           <EditAvatarPopup
             isOpen={isEditAvatarPopupOpen}
             onClose={closeAllPopups}
